@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Text;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using Decoder.Utils;
 
 namespace Decoder
 {
     public partial class MainForm : Form
     {
-        [DllImport("gdi32.dll")]
-        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [In] ref uint pcFonts);
-
-        private PrivateFontCollection _pfc;
-        
         public MainForm()
         {
             InitializeComponent();
@@ -22,36 +15,13 @@ namespace Decoder
 
             AssignCustomFont();
 
-            this.Text = string.Format(this.Text, AppUtils.GetAppVersion());
+            Text = string.Format(this.Text, AppUtils.GetAppVersion());
         }
 
-        private void InitCustomFont()
+        public sealed override string Text
         {
-            _pfc = new PrivateFontCollection();
-            var fontLength = Properties.Resources.SpaceMono_Regular.Length;
-            var fontData = Properties.Resources.SpaceMono_Regular;
-            var data = IntPtr.Zero;
-            try
-            {
-                data = Marshal.AllocCoTaskMem(fontLength);
-                Marshal.Copy(fontData, 0, data, fontLength);
-                uint cFonts = 0;
-                AddFontMemResourceEx(data, (uint)fontData.Length, IntPtr.Zero, ref cFonts);
-                _pfc.AddMemoryFont(data, fontLength);
-            }
-            finally
-            {
-                if (data != IntPtr.Zero)
-                {
-                    Marshal.FreeCoTaskMem(data);
-                }
-            }
-        }
-
-        private void AssignCustomFont()
-        {
-            uxtxtInput.Font = new Font(_pfc.Families[0], uxtxtInput.Font.Size);
-            uxtxtOutput.Font = new Font(_pfc.Families[0], uxtxtOutput.Font.Size);
+            get => base.Text;
+            set => base.Text = value;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -71,7 +41,9 @@ namespace Decoder
                 }
                 else
                 {
-                    var data = Convert.ToBase64String(Encoding.UTF8.GetBytes(uxtxtInput.Text));
+                    var data = Convert.ToBase64String(
+                        Encoding.UTF8.GetBytes(uxtxtInput.Text));
+
                     var encodedString = data;
                     uxtxtOutput.Text = encodedString;
                 }
@@ -95,24 +67,30 @@ namespace Decoder
                 return;
             }
 
-            if (e.KeyChar == (char)24) // clear
+            switch (e.KeyChar)
             {
-                uxtxtInput.Text = string.Empty;
-                uxtxtInput.Focus();
-                e.Handled = true;
-            }
-            if (e.KeyChar == (char)19) // switch
-            {
-                if (uxrdoEncode.Checked)
-                {
-                    uxrdoDecode.Checked = true;
-                }
-                else
-                {
-                    uxrdoEncode.Checked = true;
-                }
+                // clear
+                case (char)24:
+                    uxtxtInput.Text = string.Empty;
+                    uxtxtInput.Focus();
+                    e.Handled = true;
+                    break;
 
-                e.Handled = true;
+                // switch mode
+                case (char)19:
+                {
+                    if (uxrdoEncode.Checked)
+                    {
+                        uxrdoDecode.Checked = true;
+                    }
+                    else
+                    {
+                        uxrdoEncode.Checked = true;
+                    }
+
+                    e.Handled = true;
+                    break;
+                }
             }
         }
 
@@ -140,7 +118,7 @@ namespace Decoder
             }
             else
             {
-                // use thr startup string (decoded) and paste it to input for automatic encoding
+                // use the startup string (decoded) and paste it to input for automatic encoding
                 uxtxtInput.Text = startup;
             }
 

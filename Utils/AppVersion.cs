@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Decoder
+namespace Decoder.Utils
 {
     public class AppUtils
     {
