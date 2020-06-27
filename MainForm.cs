@@ -17,7 +17,9 @@ namespace Decoder
         public MainForm()
         {
             InitializeComponent();
+
             InitCustomFont();
+
             AssignCustomFont();
 
             this.Text = string.Format(this.Text, AppUtils.GetAppVersion());
