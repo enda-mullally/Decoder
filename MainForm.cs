@@ -19,6 +19,8 @@ namespace Decoder
             InitializeComponent();
             InitCustomFont();
             AssignCustomFont();
+
+            this.Text = string.Format(this.Text, AppUtils.GetAppVersion());
         }
 
         private void InitCustomFont()
@@ -59,9 +61,18 @@ namespace Decoder
         {
             try
             {
-                var data = Convert.FromBase64String(uxtxtInput.Text);
-                var decodedString = Encoding.UTF8.GetString(data);
-                uxtxtOutput.Text = decodedString;
+                if (uxrdoDecode.Checked)
+                {
+                    var data = Convert.FromBase64String(uxtxtInput.Text);
+                    var decodedString = Encoding.UTF8.GetString(data);
+                    uxtxtOutput.Text = decodedString;
+                }
+                else
+                {
+                    var data = Convert.ToBase64String(Encoding.UTF8.GetBytes(uxtxtInput.Text));
+                    var encodedString = data;
+                    uxtxtOutput.Text = encodedString;
+                }
             }
             catch (Exception)
             {
@@ -72,39 +83,70 @@ namespace Decoder
         private void MainForm_Load(object sender, EventArgs e)
         {
             MainForm_Resize(sender, e);
-
-            var startup = @"Base64 Decoder, Version: {0} by 5research.xyz" +
-                          Environment.NewLine +
-                          Environment.NewLine +
-                          "Ctrl+X = Clear";
-
-            uxtxtInput.Text = Convert.ToBase64String(Encoding.UTF8.GetBytes(startup));
-
-            uxtxtInput.SelectionStart = uxtxtInput.Text.Length;
-            uxtxtInput.SelectionLength = 0;
-
-            uxtxtOutput.SelectionStart = uxtxtOutput.Text.Length;
-            uxtxtOutput.SelectionLength = 0;
+            uxrdoDecode_CheckedChanged(sender, EventArgs.Empty);
         }
 
         private void uxtxtInput_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)24)
+            if (e.KeyChar != (char) 24 && e.KeyChar != (char) 19)
+            {
+                return;
+            }
+
+            if (e.KeyChar == (char)24) // clear
             {
                 uxtxtInput.Text = string.Empty;
                 uxtxtInput.Focus();
+                e.Handled = true;
+            }
+            if (e.KeyChar == (char)19) // switch
+            {
+                if (uxrdoEncode.Checked)
+                {
+                    uxrdoDecode.Checked = true;
+                }
+                else
+                {
+                    uxrdoEncode.Checked = true;
+                }
+
                 e.Handled = true;
             }
         }
 
         private void uxtxtOutput_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)24)
+            uxtxtInput_KeyPress(sender, e);
+        }
+
+        private void uxrdoDecode_CheckedChanged(object sender, EventArgs e)
+        {
+            var appVersion = AppUtils.GetAppVersion();
+            
+            var startup = $"Base64 De/Encoder, Version: {appVersion}" +
+                              Environment.NewLine +
+                              Environment.NewLine +
+                              "Ctrl+X = Clear" +
+                              Environment.NewLine +
+                              "Ctrl+S = Switch Mode";
+
+            if (uxrdoDecode.Checked)
             {
-                uxtxtInput.Text = string.Empty;
-                uxtxtInput.Focus();
-                e.Handled = true;
+                // encode the startup string and paste it to input for automatic decoding
+                uxtxtInput.Text = Convert.ToBase64String(
+                    Encoding.UTF8.GetBytes(startup));
             }
+            else
+            {
+                // use thr startup string (decoded) and paste it to input for automatic encoding
+                uxtxtInput.Text = startup;
+            }
+
+            uxtxtInput.SelectionStart = uxtxtInput.Text.Length;
+            uxtxtInput.SelectionLength = 0;
+
+            uxtxtOutput.SelectionStart = uxtxtOutput.Text.Length;
+            uxtxtOutput.SelectionLength = 0;
         }
     }
 }
