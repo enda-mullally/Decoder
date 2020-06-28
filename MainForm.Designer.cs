@@ -66,10 +66,10 @@
             // 
             // uxtxtOutput
             // 
-            this.uxtxtOutput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            this.uxtxtOutput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.uxtxtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uxtxtOutput.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxtxtOutput.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(145)))), ((int)(((byte)(175)))));
+            this.uxtxtOutput.ForeColor = System.Drawing.Color.LightGreen;
             this.uxtxtOutput.Location = new System.Drawing.Point(3, 6);
             this.uxtxtOutput.Multiline = true;
             this.uxtxtOutput.Name = "uxtxtOutput";
@@ -91,10 +91,10 @@
             // 
             // uxtxtInput
             // 
-            this.uxtxtInput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            this.uxtxtInput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.uxtxtInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uxtxtInput.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxtxtInput.ForeColor = System.Drawing.Color.White;
+            this.uxtxtInput.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.uxtxtInput.Location = new System.Drawing.Point(6, 6);
             this.uxtxtInput.Multiline = true;
             this.uxtxtInput.Name = "uxtxtInput";
@@ -106,6 +106,7 @@
             // 
             // uxpnlTop
             // 
+            this.uxpnlTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.uxpnlTop.Controls.Add(this.uxrdoEncode);
             this.uxpnlTop.Controls.Add(this.uxlblMode);
             this.uxpnlTop.Controls.Add(this.uxrdoDecode);
@@ -159,7 +160,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ClientSize = new System.Drawing.Size(1105, 550);
             this.Controls.Add(this.uxpnlOuter);
             this.Controls.Add(this.uxpnlTop);
